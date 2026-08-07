@@ -1,0 +1,46 @@
+project:
+  name: github-issues-clone
+
+target:
+  url: https://github.com/openai/openai-python/issues
+  allowed_domains:
+    - github.com
+
+scope:
+  description: >
+    Clone the public issue list, issue filtering, issue detail page,
+    labels, and comments without creating or modifying data.
+  workflows:
+    - View the issue list
+    - Filter issues by status or label
+    - Open an issue and inspect its details and comments
+  exclude:
+    - Authentication
+    - Creating or editing issues and comments
+    - Repository settings
+    - Pull requests
+
+sources:
+  documentation:
+    - https://docs.github.com/en/issues
+    - https://docs.github.com/en/rest/issues
+  api_specs:
+    - https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+  discovery: true
+
+browser:
+  headed: false
+  max_pages: 6
+  max_actions: 8
+
+llm:
+  provider: gemini
+  profile: development
+  lightweight_model: gemini-3.5-flash-lite
+  development_model: gemini-3.5-flash-lite
+  showcase_model: gemini-3.6-flash
+  max_input_tokens: 30000
+  max_output_tokens: 6000
+
+output:
+  root_directory: output

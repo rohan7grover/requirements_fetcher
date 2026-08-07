@@ -1,0 +1,27 @@
+project:
+  name: example-smoke
+
+target:
+  url: https://example.com
+
+scope:
+  description: Analyze the public landing page and its primary navigation.
+  workflows:
+    - View the landing page
+
+sources:
+  discovery: false
+
+browser:
+  headed: false
+  max_pages: 2
+  max_actions: 1
+
+llm:
+  provider: gemini
+  profile: development
+  max_input_tokens: 8000
+  max_output_tokens: 2500
+
+output:
+  root_directory: output
