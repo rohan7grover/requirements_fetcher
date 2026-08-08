@@ -197,7 +197,7 @@ class SourceCollector:
         self, client: httpx.AsyncClient, url: str, *, warn: bool = True
     ) -> httpx.Response | None:
         try:
-            response = await client.get(url, headers={"User-Agent": "feature-blueprint/0.1"})
+            response = await client.get(url, headers={"User-Agent": "requirements-fetcher/0.1"})
             if warn and response.status_code >= 400:
                 self.evidence.warn(f"Source returned HTTP {response.status_code}: {url}")
             return response

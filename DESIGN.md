@@ -1,8 +1,8 @@
-# Feature Blueprint — System Design
+# Requirements Fetcher — System Design
 
 ## 1. Summary
 
-Feature Blueprint analyzes a specific feature of an existing web application and produces an implementation-ready knowledge base for a separate code-generation service.
+Requirements Fetcher analyzes a specific feature of an existing web application and produces an implementation-ready knowledge base for a separate code-generation service.
 
 For example, a user can ask the system to analyze GitHub Issues. The system collects evidence from the live application, available documentation, and API descriptions. It then uses an LLM to produce requirements for:
 
