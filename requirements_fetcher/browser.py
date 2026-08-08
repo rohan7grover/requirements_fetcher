@@ -195,7 +195,7 @@ class BrowserCollector:
     async def _explore(self, browser: Browser) -> None:
         context = await browser.new_context(
             viewport={"width": 1440, "height": 1000},
-            user_agent="requirements-fetcher/0.1 (feature analysis)",
+            user_agent="feature-blueprint/0.1 (feature analysis)",
         )
         page = await context.new_page()
         page.set_default_timeout(self.config.browser.navigation_timeout_ms)

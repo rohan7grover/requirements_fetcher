@@ -1,4 +1,3 @@
-"""Feature requirements fetcher."""
+"""Feature Blueprint analysis engine."""
 
 __version__ = "0.1.0"
-

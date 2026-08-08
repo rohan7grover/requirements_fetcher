@@ -3,7 +3,7 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "requirements-fetcher"
+name = "feature-blueprint"
 version = "0.1.0"
 description = "Generate evidence-backed full-stack requirements from a web application feature"
 readme = "README.md"
@@ -33,6 +33,7 @@ test = [
 ]
 
 [project.scripts]
+feature-blueprint = "requirements_fetcher.cli:main"
 requirements-fetcher = "requirements_fetcher.cli:main"
 
 [tool.pytest.ini_options]

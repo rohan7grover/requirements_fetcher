@@ -15,7 +15,7 @@ from requirements_fetcher.utils import load_gemini_key_from_env_files
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="requirements-fetcher",
+        prog="feature-blueprint",
         description="Generate evidence-backed full-stack requirements from a web feature.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)

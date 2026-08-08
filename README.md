@@ -1,6 +1,6 @@
-# Requirements Fetcher
+# Feature Blueprint
 
-Requirements Fetcher turns a public web feature into an evidence-backed specification for building a functionally similar application. It combines browser exploration, product documentation, API specifications, and observed network data to produce frontend, backend, and database requirements.
+Feature Blueprint turns a public web feature into an evidence-backed specification for building a functionally similar application. It combines browser exploration, product documentation, API specifications, and observed network data to produce frontend, backend, and database requirements.
 
 It is useful when a downstream code-generation service needs a reliable blueprint rather than only a URL or a screenshot.
 
@@ -38,7 +38,7 @@ Requirements:
 
 ```bash
 git clone <your-repository-url>
-cd requirements_fetcher
+cd feature-blueprint
 
 python3.11 -m venv .venv
 source .venv/bin/activate
@@ -57,10 +57,10 @@ GEMINI_API_KEY=your_key_here
 Then run the included example:
 
 ```bash
-PLAYWRIGHT_BROWSERS_PATH=.browsers python -m requirements_fetcher analyze examples/github-issues.yaml
+PLAYWRIGHT_BROWSERS_PATH=.browsers feature-blueprint analyze examples/github-issues.yaml
 ```
 
-The CLI loads `GEMINI_API_KEY` from `.env`. An exported environment variable takes precedence.
+The CLI loads `GEMINI_API_KEY` from `.env`. An exported environment variable takes precedence. The original `requirements-fetcher` command and `python -m requirements_fetcher` module entry point remain available for compatibility.
 
 ## Configuration
 
