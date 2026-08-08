@@ -312,6 +312,7 @@ class BrowserActionName(str, Enum):
     TYPE = "type"
     SELECT = "select"
     GO_BACK = "go_back"
+    COMPLETE_WORKFLOW = "complete_workflow"
     STOP = "stop"
 
 

@@ -127,6 +127,7 @@ async def _build_synthesis_prompt(
             "documentation": documents,
             "api_operations": api_operations,
             "browser_observations": observations,
+            "browser_workflow_coverage": browser.workflow_coverage,
             "network_response_schemas": network,
         }
         return f"""Create implementation-ready requirements for a functionally similar web feature.

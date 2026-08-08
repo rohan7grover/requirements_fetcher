@@ -6,7 +6,17 @@ build-backend = "setuptools.build_meta"
 name = "requirements-fetcher"
 version = "0.1.0"
 description = "Generate evidence-backed full-stack requirements from a web application feature"
+readme = "README.md"
 requires-python = ">=3.11"
+keywords = ["requirements", "browser-automation", "playwright", "gemini", "code-generation"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Documentation",
+]
 dependencies = [
   "beautifulsoup4>=4.12,<5",
   "google-genai>=1.30,<2",

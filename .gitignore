@@ -1,5 +1,7 @@
 .browsers/
 .env
+.env.*
+!.env.example
 .pytest_cache/
 .tools/
 .venv/
@@ -7,3 +9,6 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 output/
+.DS_Store
+playwright-report/
+test-results/

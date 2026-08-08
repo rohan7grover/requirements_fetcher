@@ -1,4 +1,4 @@
-# Feature Requirements Fetcher — Prototype Design
+# Requirements Fetcher — System Design
 
 ## 1. Summary
 
@@ -10,7 +10,7 @@ For example, a user can ask the system to analyze GitHub Issues. The system coll
 - Backend APIs, business rules, validation, and permissions
 - Database entities, fields, relationships, and constraints
 
-The system is generic. GitHub Issues is a demonstration target, not a hardcoded integration.
+The system is generic. GitHub Issues is an example target, not a hardcoded integration.
 
 ```text
 User input
@@ -24,11 +24,11 @@ LLM-based requirements generation
 requirements.json + requirements.md + evidence
 ```
 
-## 2. Prototype Goal
+## 2. Objective
 
 Given a feature description and an accessible application URL, generate a structured full-stack specification that another service can use to build a functionally similar feature.
 
-The prototype is successful when it can:
+The system is successful when it can:
 
 1. Accept a generic configuration file.
 2. Inspect the requested feature using a browser.
@@ -39,7 +39,7 @@ The prototype is successful when it can:
 
 ## 3. Scope
 
-### Included in the prototype
+### Current scope
 
 - Command-line interface
 - YAML configuration file
@@ -53,7 +53,7 @@ The prototype is successful when it can:
 - JSON and Markdown outputs
 - Local filesystem storage
 
-### Not included in the prototype
+### Non-goals
 
 - Code generation
 - Web dashboard
@@ -162,7 +162,7 @@ export GEMINI_API_KEY="..."
 
 For local development, the CLI also loads `GEMINI_API_KEY` from an ignored `.env` file in the current directory or alongside the configuration file. An explicitly exported environment variable takes precedence.
 
-During normal development, `profile: development` uses Gemini 3.5 Flash-Lite for every LLM task. For the final demonstration, the profile can be changed without changing the code:
+The development profile uses Gemini 3.5 Flash-Lite for cost-efficient structured work. A higher-capability profile can be selected without changing the code:
 
 ```yaml
 llm:
@@ -170,9 +170,9 @@ llm:
   profile: showcase
 ```
 
-The showcase profile continues to use Flash-Lite for small repeated tasks such as selecting a browser action, but uses Gemini 3.6 Flash for the final requirements synthesis where additional reasoning quality is most valuable.
+The higher-capability profile uses Gemini 3.6 Flash for requirements synthesis when additional reasoning quality is valuable. Browser-action model selection remains independently configurable.
 
-### 4.3 Running the prototype
+### 4.3 Running an analysis
 
 ```bash
 python -m requirements_fetcher analyze config.yaml
@@ -188,7 +188,7 @@ Example terminal output:
 [5/5] Results written to output/github-issues-clone-20260807-143000/
 ```
 
-Authenticated exploration is deferred from the prototype. The tool reports a limitation when the requested feature cannot be reached as a public page.
+Authenticated exploration is not currently supported. The tool reports a limitation when the requested feature cannot be reached as a public page.
 
 ## 5. Generic System Behavior
 
@@ -202,7 +202,7 @@ The core system contains no GitHub-specific selectors, endpoints, or data models
 - Documentation pages
 - User workflows and state transitions
 
-Some targets may eventually benefit from optional product-specific adapters, but adapters are outside the prototype and are not required by the core pipeline.
+Some targets may eventually benefit from optional product-specific adapters, but adapters are not required by the core pipeline.
 
 ## 6. Sources of Knowledge
 
@@ -220,7 +220,7 @@ The system can use the following sources, ordered roughly by reliability:
 | Public source code/tests | Additional behavior when the target is open source |
 | LLM inference | Missing backend and database design, marked as inferred |
 
-The prototype prioritizes user-supplied sources, then attempts lightweight discovery such as `llms.txt`, `sitemap.xml`, and common OpenAPI locations. It does not attempt an unrestricted internet-wide search.
+The system prioritizes user-supplied sources, then attempts lightweight discovery such as `llms.txt`, `sitemap.xml`, and common OpenAPI locations. It does not attempt an unrestricted internet-wide search.
 
 ## 7. Processing Flow
 
@@ -277,6 +277,8 @@ All collected information is converted to common evidence records:
 ```
 
 A screenshot is one type of evidence. Evidence also includes page observations, documentation, API descriptions, actions, and network records.
+
+Screenshots are deduplicated by their rendered PNG hash. Network calls to undocumented persisted GraphQL transports are retained for data-shape evidence but marked non-replayable; they must not be presented as public API contracts for the generated clone.
 
 ### Step 5: Generate requirements
 
@@ -372,7 +374,8 @@ output/
         │   └── relevant-operations.json
         ├── browser/
         │   ├── observations.json
-        │   └── actions.json
+        │   ├── actions.json
+        │   └── workflow-coverage.json
         ├── network/
         │   ├── requests.json
         │   └── response-schemas.json
@@ -499,7 +502,7 @@ This directory explains how the system reached its conclusions. It contains scre
 
 Sensitive headers, authentication tokens, cookies, and passwords must be removed before evidence is stored.
 
-## 10. Suggested Prototype Architecture
+## 10. Architecture
 
 ```text
 requirements_fetcher/
@@ -527,14 +530,14 @@ Recommended implementation stack:
 
 ### 10.1 Gemini model strategy
 
-The prototype uses two configurable model roles:
+The system uses two configurable model roles:
 
-| Role | Development model | Showcase model | Purpose |
+| Role | Default model | Higher-capability model | Purpose |
 |---|---|---|---|
 | Lightweight | `gemini-3.5-flash-lite` | `gemini-3.5-flash-lite` | Browser action selection, evidence classification, and small structured tasks |
 | Synthesis | `gemini-3.5-flash-lite` | `gemini-3.6-flash` | Producing the final frontend, backend, and database requirements |
 
-Gemini 3.5 Flash-Lite is the default because it is a stable, cost-efficient model designed for high-volume processing, document extraction, and structured JSON. Gemini 3.6 Flash is reserved for the showcase synthesis because it offers stronger reasoning while remaining faster and less expensive than using a Pro model throughout the pipeline.
+Gemini 3.5 Flash-Lite is the default because it is a cost-efficient model for high-volume processing, document extraction, and structured JSON. Gemini 3.6 Flash can be selected for synthesis when stronger reasoning is worth the additional quota and cost.
 
 The model names live in configuration rather than source code so they can be updated when Google changes its model catalog.
 
@@ -574,4 +577,4 @@ Gemini structured output mode is used with a JSON schema generated from the Pyda
 4. Define and validate the `requirements.json` Pydantic schema.
 5. Generate requirements with one LLM call.
 6. Render `requirements.md` from the JSON.
-7. Run an end-to-end demonstration against one public feature such as GitHub Issues.
+7. Validate an end-to-end analysis against a public feature such as GitHub Issues.

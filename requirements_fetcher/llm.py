@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from copy import deepcopy
@@ -7,7 +8,7 @@ from datetime import datetime
 from typing import Any, TypeVar
 
 from google import genai
-from google.genai import types
+from google.genai import errors, types
 from pydantic import BaseModel, ValidationError
 
 from requirements_fetcher.models import BrowserAction, GeneratedRequirements, LLMConfig
@@ -28,13 +29,26 @@ class GeminiClient:
         self.usage: list[dict[str, Any]] = []
 
     async def choose_browser_action(self, prompt: str) -> BrowserAction:
-        return await self._generate_structured(
-            model=self.config.lightweight_model,
-            prompt=prompt,
-            schema=BrowserAction,
-            purpose="browser_action",
-            max_output_tokens=512,
-        )
+        last_error: Exception | None = None
+        for attempt in range(2):
+            try:
+                retry_note = (
+                    "\n\nYour previous response was incomplete. Return one complete JSON action."
+                    if attempt
+                    else ""
+                )
+                return await self._generate_structured(
+                    model=self.config.lightweight_model,
+                    prompt=prompt + retry_note,
+                    schema=BrowserAction,
+                    purpose="browser_action",
+                    max_output_tokens=1_200,
+                    temperature=0.1,
+                    thinking_budget=256,
+                )
+            except (ValidationError, ValueError) as exc:
+                last_error = exc
+        raise ValueError("Gemini returned an invalid browser action after one retry") from last_error
 
     async def generate_requirements(
         self, prompt: str, validation_feedback: str | None = None
@@ -75,16 +89,34 @@ class GeminiClient:
         schema: type[T],
         purpose: str,
         max_output_tokens: int,
+        temperature: float | None = None,
+        thinking_budget: int | None = None,
     ) -> T:
-        response = await self.client.aio.models.generate_content(
-            model=model,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                response_schema=gemini_response_schema(schema),
-                max_output_tokens=max_output_tokens,
-            ),
-        )
+        response = None
+        for attempt in range(3):
+            try:
+                response = await self.client.aio.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=gemini_response_schema(schema),
+                        max_output_tokens=max_output_tokens,
+                        temperature=temperature,
+                        thinking_config=(
+                            types.ThinkingConfig(thinking_budget=thinking_budget)
+                            if thinking_budget is not None
+                            else None
+                        ),
+                    ),
+                )
+                break
+            except errors.APIError as exc:
+                if not _is_transient_api_error(exc) or attempt == 2:
+                    raise
+                await asyncio.sleep(2**attempt)
+        if response is None:  # pragma: no cover - defensive guard
+            raise RuntimeError(f"Gemini returned no response for {purpose}")
         self._record_usage(purpose, model, response)
         parsed = getattr(response, "parsed", None)
         if isinstance(parsed, schema):
@@ -139,6 +171,10 @@ class GeminiClient:
                 self.client.close()
             except AttributeError:
                 pass
+
+
+def _is_transient_api_error(exc: errors.APIError) -> bool:
+    return exc.code == 429 or 500 <= exc.code < 600
 
 
 def gemini_response_schema(model: type[BaseModel]) -> dict[str, Any]:

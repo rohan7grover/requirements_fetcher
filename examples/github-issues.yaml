@@ -31,7 +31,7 @@ sources:
 browser:
   headed: false
   max_pages: 6
-  max_actions: 8
+  max_actions: 12
 
 llm:
   provider: gemini

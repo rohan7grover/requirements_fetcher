@@ -1,4 +1,7 @@
-from requirements_fetcher.browser import action_safety_error
+from google.genai import errors
+
+from requirements_fetcher.browser import _element_priority, action_safety_error
+from requirements_fetcher.llm import _is_transient_api_error
 from requirements_fetcher.models import BrowserAction
 
 
@@ -30,3 +33,35 @@ def test_select_is_limited_to_filter_controls() -> None:
 
     assert action_safety_error(action, {"tag": "select", "name": "timezone"})
     assert action_safety_error(action, {"tag": "select", "name": "status filter"}) is None
+
+
+def test_complete_workflow_needs_no_element() -> None:
+    action = BrowserAction(action="complete_workflow", reason="Issue list is visible")
+
+    assert action.element_id is None
+
+
+def test_relevant_navigation_is_prioritized_over_current_page_link() -> None:
+    current = "https://example.com/org/repo/issues"
+    keywords = ["issues", "detail", "comments"]
+
+    issue_score = _element_priority(
+        {"tag": "a", "text": "A real bug", "href": "/org/repo/issues/123"},
+        current,
+        keywords,
+        150,
+    )
+    current_score = _element_priority(
+        {"tag": "a", "text": "Issues", "href": "/org/repo/issues"},
+        current,
+        keywords,
+        1,
+    )
+
+    assert issue_score > current_score
+
+
+def test_only_rate_limits_and_server_errors_are_transient() -> None:
+    assert _is_transient_api_error(errors.ServerError(503, {"message": "busy"}))
+    assert _is_transient_api_error(errors.ClientError(429, {"message": "slow down"}))
+    assert not _is_transient_api_error(errors.ClientError(401, {"message": "bad key"}))
