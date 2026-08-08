@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from requirements_fetcher.browser import BrowserCollector
-from requirements_fetcher.models import AppConfig, BrowserAction
-from requirements_fetcher.storage import EvidenceStore, RunPaths
+from feature_blueprint.browser import BrowserCollector
+from feature_blueprint.models import AppConfig, BrowserAction
+from feature_blueprint.storage import EvidenceStore, RunPaths
 
 
 class _Handler(BaseHTTPRequestHandler):

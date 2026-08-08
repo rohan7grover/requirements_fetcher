@@ -3,9 +3,9 @@ from pathlib import Path
 import httpx
 import pytest
 
-from requirements_fetcher.models import AppConfig
-from requirements_fetcher.source_collectors import SourceCollector, clean_document
-from requirements_fetcher.storage import EvidenceStore, RunPaths
+from feature_blueprint.models import AppConfig
+from feature_blueprint.source_collectors import SourceCollector, clean_document
+from feature_blueprint.storage import EvidenceStore, RunPaths
 
 
 def make_config(tmp_path: Path) -> AppConfig:

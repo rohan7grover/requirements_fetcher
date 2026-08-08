@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from requirements_fetcher.models import RequirementsDocument, Traceable
+from feature_blueprint.models import RequirementsDocument, Traceable
 
 
 def render_markdown(document: RequirementsDocument) -> str:

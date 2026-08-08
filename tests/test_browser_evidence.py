@@ -4,13 +4,13 @@ from urllib.parse import urlencode
 
 import pytest
 
-from requirements_fetcher.browser import (
+from feature_blueprint.browser import (
     BrowserCollectionResult,
     BrowserCollector,
     _network_request_descriptor,
 )
-from requirements_fetcher.models import AppConfig
-from requirements_fetcher.storage import EvidenceStore, RunPaths
+from feature_blueprint.models import AppConfig
+from feature_blueprint.storage import EvidenceStore, RunPaths
 
 
 class _FakeMouse:

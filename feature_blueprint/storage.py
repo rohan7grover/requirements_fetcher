@@ -8,7 +8,7 @@ from typing import Any
 
 import yaml
 
-from requirements_fetcher.models import AppConfig, EvidenceRecord, EvidenceType
+from feature_blueprint.models import AppConfig, EvidenceRecord, EvidenceType
 
 
 @dataclass(frozen=True)

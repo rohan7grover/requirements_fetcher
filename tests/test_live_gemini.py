@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from requirements_fetcher.llm import GeminiClient
-from requirements_fetcher.models import AppConfig
-from requirements_fetcher.storage import RunPaths
+from feature_blueprint.llm import GeminiClient
+from feature_blueprint.models import AppConfig
+from feature_blueprint.storage import RunPaths
 
 
 @pytest.mark.live

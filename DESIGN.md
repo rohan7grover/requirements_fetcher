@@ -1,8 +1,8 @@
-# Requirements Fetcher — System Design
+# Feature Blueprint — System Design
 
 ## 1. Summary
 
-Requirements Fetcher analyzes a specific feature of an existing web application and produces an implementation-ready knowledge base for a separate code-generation service.
+Feature Blueprint analyzes a specific feature of an existing web application and produces an implementation-ready knowledge base for a separate code-generation service.
 
 For example, a user can ask the system to analyze GitHub Issues. The system collects evidence from the live application, available documentation, and API descriptions. It then uses an LLM to produce requirements for:
 
@@ -175,7 +175,7 @@ The higher-capability profile uses Gemini 3.6 Flash for requirements synthesis w
 ### 4.3 Running an analysis
 
 ```bash
-python -m requirements_fetcher analyze config.yaml
+python -m feature_blueprint analyze config.yaml
 ```
 
 Example terminal output:
@@ -505,7 +505,7 @@ Sensitive headers, authentication tokens, cookies, and passwords must be removed
 ## 10. Architecture
 
 ```text
-requirements_fetcher/
+feature_blueprint/
   ├── ConfigLoader
   ├── DocumentationCollector
   ├── ApiSpecCollector

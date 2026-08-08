@@ -3,8 +3,8 @@ from types import SimpleNamespace
 import pytest
 from google.genai import errors
 
-from requirements_fetcher.llm import GeminiClient
-from requirements_fetcher.models import BrowserAction
+from feature_blueprint.llm import GeminiClient
+from feature_blueprint.models import BrowserAction
 
 
 @pytest.mark.asyncio
@@ -29,7 +29,7 @@ async def test_structured_generation_retries_transient_api_errors(monkeypatch) -
     client = GeminiClient.__new__(GeminiClient)
     client.client = SimpleNamespace(aio=SimpleNamespace(models=models))
     client.usage = []
-    monkeypatch.setattr("requirements_fetcher.llm.asyncio.sleep", no_wait)
+    monkeypatch.setattr("feature_blueprint.llm.asyncio.sleep", no_wait)
 
     action = await client._generate_structured(
         model="test-model",

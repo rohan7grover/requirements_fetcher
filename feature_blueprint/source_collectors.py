@@ -12,9 +12,9 @@ import httpx
 import yaml
 from bs4 import BeautifulSoup
 
-from requirements_fetcher.models import AppConfig, EvidenceType
-from requirements_fetcher.storage import EvidenceStore, RunPaths, write_json
-from requirements_fetcher.utils import relevance_score, safe_filename, scope_keywords
+from feature_blueprint.models import AppConfig, EvidenceType
+from feature_blueprint.storage import EvidenceStore, RunPaths, write_json
+from feature_blueprint.utils import relevance_score, safe_filename, scope_keywords
 
 
 HTTP_METHODS = {"get", "post", "put", "patch", "delete", "head", "options", "trace"}
@@ -197,7 +197,7 @@ class SourceCollector:
         self, client: httpx.AsyncClient, url: str, *, warn: bool = True
     ) -> httpx.Response | None:
         try:
-            response = await client.get(url, headers={"User-Agent": "requirements-fetcher/0.1"})
+            response = await client.get(url, headers={"User-Agent": "feature-blueprint/0.1"})
             if warn and response.status_code >= 400:
                 self.evidence.warn(f"Source returned HTTP {response.status_code}: {url}")
             return response

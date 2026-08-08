@@ -7,15 +7,15 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from requirements_fetcher.browser import BrowserCollectionError
-from requirements_fetcher.models import AppConfig
-from requirements_fetcher.pipeline import run_analysis
-from requirements_fetcher.utils import load_gemini_key_from_env_files
+from feature_blueprint.browser import BrowserCollectionError
+from feature_blueprint.models import AppConfig
+from feature_blueprint.pipeline import run_analysis
+from feature_blueprint.utils import load_gemini_key_from_env_files
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="requirements-fetcher",
+        prog="feature-blueprint",
         description="Generate evidence-backed full-stack requirements from a web feature.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)

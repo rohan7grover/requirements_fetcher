@@ -8,9 +8,9 @@ from typing import Any, Callable
 
 from pydantic import ValidationError
 
-from requirements_fetcher.browser import BrowserCollectionError, BrowserCollectionResult, BrowserCollector
-from requirements_fetcher.llm import GeminiClient
-from requirements_fetcher.models import (
+from feature_blueprint.browser import BrowserCollectionError, BrowserCollectionResult, BrowserCollector
+from feature_blueprint.llm import GeminiClient
+from feature_blueprint.models import (
     AppConfig,
     EvidenceType,
     GeneratedRequirements,
@@ -18,10 +18,10 @@ from requirements_fetcher.models import (
     ProjectResult,
     RequirementsDocument,
 )
-from requirements_fetcher.renderer import render_markdown
-from requirements_fetcher.source_collectors import SourceCollectionResult, SourceCollector
-from requirements_fetcher.storage import EvidenceStore, RunPaths, write_json
-from requirements_fetcher.utils import compact_json
+from feature_blueprint.renderer import render_markdown
+from feature_blueprint.source_collectors import SourceCollectionResult, SourceCollector
+from feature_blueprint.storage import EvidenceStore, RunPaths, write_json
+from feature_blueprint.utils import compact_json
 
 
 ProgressCallback = Callable[[str], None]

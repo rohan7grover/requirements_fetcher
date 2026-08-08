@@ -11,8 +11,8 @@ from google import genai
 from google.genai import errors, types
 from pydantic import BaseModel, ValidationError
 
-from requirements_fetcher.models import BrowserAction, GeneratedRequirements, LLMConfig
-from requirements_fetcher.storage import RunPaths, write_json
+from feature_blueprint.models import BrowserAction, GeneratedRequirements, LLMConfig
+from feature_blueprint.storage import RunPaths, write_json
 
 
 T = TypeVar("T", bound=BaseModel)

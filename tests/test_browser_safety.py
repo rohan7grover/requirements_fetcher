@@ -1,8 +1,8 @@
 from google.genai import errors
 
-from requirements_fetcher.browser import _element_priority, action_safety_error
-from requirements_fetcher.llm import _is_transient_api_error
-from requirements_fetcher.models import BrowserAction
+from feature_blueprint.browser import _element_priority, action_safety_error
+from feature_blueprint.llm import _is_transient_api_error
+from feature_blueprint.models import BrowserAction
 
 
 def test_rejects_submit_and_destructive_controls() -> None:

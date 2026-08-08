@@ -11,16 +11,16 @@ from urllib.parse import parse_qs, urljoin, urlparse
 
 from playwright.async_api import Browser, Error as PlaywrightError, Locator, Page, Response, async_playwright
 
-from requirements_fetcher.llm import GeminiClient
-from requirements_fetcher.models import (
+from feature_blueprint.llm import GeminiClient
+from feature_blueprint.models import (
     AppConfig,
     BrowserAction,
     BrowserActionName,
     EvidenceType,
     domain_is_allowed,
 )
-from requirements_fetcher.storage import EvidenceStore, RunPaths, write_json
-from requirements_fetcher.utils import (
+from feature_blueprint.storage import EvidenceStore, RunPaths, write_json
+from feature_blueprint.utils import (
     compact_json,
     content_fingerprint,
     json_shape,
@@ -195,7 +195,7 @@ class BrowserCollector:
     async def _explore(self, browser: Browser) -> None:
         context = await browser.new_context(
             viewport={"width": 1440, "height": 1000},
-            user_agent="requirements-fetcher/0.1 (feature analysis)",
+            user_agent="feature-blueprint/0.1 (feature analysis)",
         )
         page = await context.new_page()
         page.set_default_timeout(self.config.browser.navigation_timeout_ms)

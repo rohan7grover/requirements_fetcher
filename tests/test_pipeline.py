@@ -3,11 +3,11 @@ from pathlib import Path
 
 import pytest
 
-from requirements_fetcher.browser import BrowserCollectionResult
-from requirements_fetcher.models import AppConfig, GeneratedRequirements
-from requirements_fetcher.pipeline import _remove_invalid_evidence_ids, run_analysis
-from requirements_fetcher.source_collectors import SourceCollectionResult
-from requirements_fetcher.storage import write_json
+from feature_blueprint.browser import BrowserCollectionResult
+from feature_blueprint.models import AppConfig, GeneratedRequirements
+from feature_blueprint.pipeline import _remove_invalid_evidence_ids, run_analysis
+from feature_blueprint.source_collectors import SourceCollectionResult
+from feature_blueprint.storage import write_json
 
 
 def test_invalid_evidence_references_are_removed_recursively() -> None:
@@ -142,9 +142,9 @@ async def test_pipeline_writes_machine_and_human_outputs(
             )
 
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
-    monkeypatch.setattr("requirements_fetcher.pipeline.GeminiClient", FakeGemini)
-    monkeypatch.setattr("requirements_fetcher.pipeline.SourceCollector", FakeSources)
-    monkeypatch.setattr("requirements_fetcher.pipeline.BrowserCollector", FakeBrowser)
+    monkeypatch.setattr("feature_blueprint.pipeline.GeminiClient", FakeGemini)
+    monkeypatch.setattr("feature_blueprint.pipeline.SourceCollector", FakeSources)
+    monkeypatch.setattr("feature_blueprint.pipeline.BrowserCollector", FakeBrowser)
     config = AppConfig.model_validate(
         {
             "project": {"name": "pipeline-test"},

@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from requirements_fetcher.llm import gemini_response_schema
-from requirements_fetcher.models import BrowserAction, GeneratedRequirements
-from requirements_fetcher.utils import (
+from feature_blueprint.llm import gemini_response_schema
+from feature_blueprint.models import BrowserAction, GeneratedRequirements
+from feature_blueprint.utils import (
     json_shape,
     load_gemini_key_from_env_files,
     redact,

@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from requirements_fetcher.models import AppConfig, LLMProfile
+from feature_blueprint.models import AppConfig, LLMProfile
 
 
 def minimal_config() -> dict:
